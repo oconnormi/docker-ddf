@@ -1,6 +1,6 @@
 FROM anapsix/alpine-java:jdk
 
-ARG version=2.9.0
+ARG version=2.9.1
 
 ENV DDF_VERSION=${version}
 ENV DDF_BASE="/opt/ddf"
