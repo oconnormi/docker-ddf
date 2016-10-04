@@ -1,10 +1,9 @@
-FROM anapsix/alpine-java:jdk
+FROM oconnormi/ddf-base
 MAINTAINER oconnormi
 
 ENV APP_VERSION=2.9.2
 ENV APP_BASE=/opt
 ENV APP_HOME=$APP_BASE/ddf
-ENV ENTRYPOINT_HOME=/opt/entrypoint
 
 RUN apk add --no-cache curl unzip
 
@@ -16,8 +15,6 @@ RUN mkdir -p $APP_BASE/tmp \
     && mv ddf-${APP_VERSION}/* $APP_HOME \
     && rm -rf $APP_BASE/tmp \
     && mkdir -p $ENTRYPOINT_HOME
-
-COPY entrypoint/* $ENTRYPOINT_HOME/
 
 VOLUME $APP_HOME/data $APP_HOME/deploy $APP_HOME/etc
 
