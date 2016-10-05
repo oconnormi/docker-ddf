@@ -4,6 +4,7 @@ MAINTAINER oconnormi
 ENV APP_VERSION=2.9.2
 ENV APP_BASE=/opt
 ENV APP_HOME=$APP_BASE/ddf
+ENV APP_LOG=$APP_HOME/data/log/ddf.log
 
 RUN apk add --no-cache curl unzip
 

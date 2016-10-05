@@ -13,40 +13,37 @@
 #     docker run -itP -h solr --name solr ddf/solr:2.10.0-SNAPSHOT
 #     docker run -it -h solr -p 8993:8993 -p 8101:8101 -p 8181:8181 --name solr ddf/solr:2.10.0-SNAPSHOT
 
-FROM anapsix/alpine-java:jdk
+FROM oconnormi/ddf:2.9
 
-ARG repo=releases
-ARG version
-ARG hostname=solr
-ARG siteName=solr
-
-EXPOSE 8101
-EXPOSE 8181
-EXPOSE 8993
-
-ENV DDF_VERSION=${version}
-ENV DDF_BASE="/opt/ddf"
-ENV DDF_HOME=${DDF_BASE}/ddf-${DDF_VERSION}
+ENV APP_VERSION=2.9.2
+ENV APP_BASE=/opt
+ENV APP_HOME=${APP_BASE}/ddf
+ENV ENTRYPOINT_HOME=/opt/entrypoint
 
 RUN apk add --no-cache curl unzip
 
-RUN mkdir -p $DDF_BASE/tmp \
-    && mkdir -p $DDF_HOME \
-    && cd $DDF_BASE/tmp \
-    && curl -o ddf.zip "http://artifacts.codice.org/service/local/artifact/maven/content?g=org.codice.ddf&a=ddf&v=$DDF_VERSION&r=snapshots&e=zip" \
+RUN mkdir -p $APP_BASE/tmp \
+    && mkdir -p $APP_HOME \
+    && cd $APP_BASE/tmp \
+    && curl -o ddf.zip "http://artifacts.codice.org/service/local/artifact/maven/content?g=org.codice.ddf&a=ddf&v=$APP_VERSION&r=releases&e=zip" \
     && unzip ddf.zip \
-    && mv ddf-${DDF_VERSION}/* $DDF_HOME \
-    && rm -rf $DDF_BASE/tmp
+    && mv ddf-${APP_VERSION}/* $APP_HOME \
+    && rm -rf $APP_BASE/tmp
 
-COPY ./etc ${DDF_HOME}/etc
+COPY ./etc ${APP_HOME}/etc
 
-RUN chmod 755 ${DDF_HOME}/etc/certs/CertNew.sh \
-    && ${DDF_HOME}/etc/certs/CertNew.sh -cn ${hostname}
+RUN chmod 755 ${APP_HOME}/etc/certs/CertNew.sh \
+    && ${APP_HOME}/etc/certs/CertNew.sh -cn ${hostname} \
+    && sed -i.bak s/REPLACE_HOSTNAME/${hostname}/ ${APP_HOME}/etc/system.properties \
+    && sed -i.bak s/REPLACE_SITE_NAME/${siteName}/ ${APP_HOME}/etc/system.properties \
+    && sed -i.bak s/REPLACE_HOSTNAME/${siteName}/ ${APP_HOME}/etc/ddf.catalog.federation.impl.CachingFederationStrategy.config \
+    && sed -i.bak s/REPLACE_HOSTNAME/${siteName}/ ${APP_HOME}/etc/ddf.catalog.solr.external.SolrHttpCatalogProvider.config \
+    && sed -i.bak s/REPLACE_HOSTNAME/${siteName}/ ${APP_HOME}/etc/org.codice.ddf.persistence.internal.PersistentStoreImpl.config
 
-RUN sed -i.bak s/REPLACE_HOSTNAME/${hostname}/ ${DDF_HOME}/etc/system.properties \
-    && sed -i.bak s/REPLACE_SITE_NAME/${siteName}/ ${DDF_HOME}/etc/system.properties \
-    && sed -i.bak s/REPLACE_HOSTNAME/${siteName}/ ${DDF_HOME}/etc/ddf.catalog.federation.impl.CachingFederationStrategy.config \
-    && sed -i.bak s/REPLACE_HOSTNAME/${siteName}/ ${DDF_HOME}/etc/ddf.catalog.solr.external.SolrHttpCatalogProvider.config \
-    && sed -i.bak s/REPLACE_HOSTNAME/${siteName}/ ${DDF_HOME}/etc/org.codice.ddf.persistence.internal.PersistentStoreImpl.config
+COPY entrypoint/* $ENTRYPOINT_HOME/
 
-ENTRYPOINT ["/bin/bash", "-c", "${DDF_HOME}/bin/ddf; tail -f /dev/null"]
+VOLUME $APP_HOME/data $APP_HOME/deploy $APP_HOME/etc
+
+EXPOSE 8101 8181 8993
+
+ENTRYPOINT ["/bin/bash", "-c", "$ENTRYPOINT_HOME/entrypoint.sh"]
