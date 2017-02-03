@@ -1,4 +1,4 @@
-FROM oconnormi/ddf-base
+FROM oconnormi/ddf-base:edge
 MAINTAINER oconnormi
 
 ENV APP_VERSION=2.10.0-SNAPSHOT
