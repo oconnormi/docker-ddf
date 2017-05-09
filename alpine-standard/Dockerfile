@@ -1,7 +1,7 @@
 FROM oconnormi/ddf-base
 MAINTAINER oconnormi
 
-ENV APP_VERSION=2.10.0
+ENV APP_VERSION=2.10.2
 ENV APP_BASE=/opt
 ENV APP_HOME=$APP_BASE/ddf
 ENV APP_LOG=$APP_HOME/data/log/ddf.log
