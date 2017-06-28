@@ -1,4 +1,4 @@
-FROM oconnormi/ddf-base-centos
+FROM oconnormi/ddf-base:centos-latest
 MAINTAINER oconnormi
 
 ENV APP_VERSION=2.10.2
