@@ -6,7 +6,7 @@ RUN curl -o ddf.zip \
 RUN unzip ddf.zip
 RUN mv ddf-${DDF_VERSION} /ddf
 
-FROM oconnormi/ddf-base:edge
+FROM oconnormi/ddf-base:alpine-latest
 LABEL maintainer=oconnormi
 
 ENV APP_HOME=/app
