@@ -1,12 +1,12 @@
 FROM alpine
-ENV DDF_VERSION=2.11.2
+ENV DDF_VERSION=2.12.0-SNAPSHOT
 RUN apk add --no-cache curl unzip
 RUN curl -o ddf.zip \
-  "http://artifacts.codice.org/service/local/artifact/maven/content?g=org.codice.ddf&a=ddf&v=$DDF_VERSION&r=releases&e=zip"
+  "http://artifacts.codice.org/service/local/artifact/maven/content?g=org.codice.ddf&a=ddf&v=$DDF_VERSION&r=snapshots&e=zip"
 RUN unzip ddf.zip
 RUN mv ddf-${DDF_VERSION} /ddf
 
-FROM oconnormi/ddf-base:2.11-alpine
+FROM oconnormi/ddf-base:2.12-alpine
 LABEL maintainer=oconnormi
 
 ENV APP_HOME=/app
