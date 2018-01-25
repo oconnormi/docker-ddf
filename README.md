@@ -12,13 +12,13 @@ See the [ddf homepage](http://codice.org/ddf/)
 To start a basic default DDF instance
 
 ```
-docker run -name some-ddf -d oconnormi/ddf
+docker run -name some-ddf -d codice/ddf
 ```
 
 To expose the ddf ui:
 
 ```
-docker run -name some-ddf -d -p 8993:8993 oconnormi/ddf
+docker run -name some-ddf -d -p 8993:8993 codice/ddf
 ```
 
 ### Persistence

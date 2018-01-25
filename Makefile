@@ -1,5 +1,5 @@
 # Set the base name for the image
-IMAGE_NAME:=oconnormi/ddf
+IMAGE_NAME:=codice/ddf
 # Get current system arch, used when building tags
 IMAGE_ARCH:=$(shell uname -m | sed 's/x86_64/amd64/')
 # manifest-tool download variables
