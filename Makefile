@@ -42,7 +42,7 @@ images: $(IMAGES) latest ## Build all docker containers
 .PHONY: $(IMAGES)
 $(IMAGES): ## Build specific image
 	@echo "Building $(BUILD_TAG)"
-	@docker build -t $(BUILD_TAG) -f $(DOCKERFILE_PATH) $(DOCKER_BUILD_CONTEXT)
+	@docker build --pull -t $(BUILD_TAG) -f $(DOCKERFILE_PATH) $(DOCKER_BUILD_CONTEXT)
 
 .PHONY: latest
 latest:
