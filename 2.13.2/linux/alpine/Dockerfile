@@ -1,8 +1,8 @@
 FROM alpine
-ENV DDF_VERSION=2.13.1
+ENV DDF_VERSION=2.13.2-SNAPSHOT
 RUN apk add --no-cache curl unzip
 RUN curl -o ddf.zip \
-  "http://artifacts.codice.org/service/local/artifact/maven/content?g=org.codice.ddf&a=ddf&v=$DDF_VERSION&r=releases&e=zip"
+  "http://artifacts.codice.org/service/local/artifact/maven/content?g=org.codice.ddf&a=ddf&v=$DDF_VERSION&r=snapshots&e=zip"
 RUN unzip ddf.zip
 RUN mv ddf-${DDF_VERSION} /ddf
 
